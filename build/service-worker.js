@@ -7,22 +7,26 @@ workbox.setConfig({
   debug: true
 });
 
+workbox.precaching.precacheAndRoute(self.__precacheManifest);
+
 self.addEventListener("install", event => event.waitUntil(self.skipWaiting()));
 self.addEventListener("activate", event =>
   event.waitUntil(self.clients.claim())
 );
 
-workbox.routing.registerRoute("/", workbox.strategies.networkFirst());
+workbox.routing.registerRoute("/", new workbox.strategies.NetworkFirst());
 
 console.log("SW");
 workbox.routing.registerRoute(
-  /.*\/todos\/.*/,
-  workbox.strategies.staleWhileRevalidate({
+  /.*\/todos/,
+  new workbox.strategies.NetworkFirst({
+    networkTimeoutSeconds: 4,
     cacheName: "api",
-    cacheExpiration: {
-      maxEntries: 20
-    },
     cacheableResponse: { statuses: [0, 200] }
   })
+);
+
+workbox.routing.registerNavigationRoute(
+  workbox.precaching.getCacheKeyForURL("/index.html")
 );
 
