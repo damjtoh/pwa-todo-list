@@ -50,7 +50,9 @@ function App() {
       toast.error("Debe ingresar una tarea");
       return null;
     }
-    TodosService.add(name).then(getTodos);
+    TodosService.add(name).then(newTodo => {
+      setTodos(todos => [...todos, newTodo]);
+    });
     console.log(inputRef.current.value);
   };
 
