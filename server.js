@@ -6,9 +6,6 @@ const path = require("path");
 
 app.use(cors());
 app.use(express.static(__dirname + "/build")); //serves the index.html
-app.get("*", (request, response) => {
-  response.sendFile(path.join(__dirname, "build", "index.html"));
-});
 app.use(
   "/todos",
   proxy({
