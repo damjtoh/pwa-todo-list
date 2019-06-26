@@ -52,6 +52,7 @@ function App() {
     }
     TodosService.add(name).then(newTodo => {
       setTodos(todos => [...todos, newTodo]);
+      inputRef.current.value = "";
     });
     console.log(inputRef.current.value);
   };

@@ -27,3 +27,31 @@ workbox.routing.registerRoute(
 workbox.routing.registerNavigationRoute(
   workbox.precaching.getCacheKeyForURL("/index.html")
 );
+
+workbox.routing.registerRoute(
+  /^https:\/\/kit-free\.fontawesome\.com/,
+  new workbox.strategies.CacheFirst({
+    cacheName: "fontawesome",
+    plugins: [
+      new workbox.cacheableResponse.Plugin({
+        statuses: [0, 200]
+      }),
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 60 * 60 * 24 * 365,
+        maxEntries: 30
+      })
+    ]
+  })
+);
+
+const queue = new workbox.backgroundSync.Queue("failedAddedTodos");
+
+self.addEventListener("fetch", event => {
+  // Clone the request to ensure it's save to read when
+  // adding to the Queue.
+  const promiseChain = fetch(event.request.clone()).catch(err => {
+    return queue.pushRequest({ request: event.request });
+  });
+
+  event.waitUntil(promiseChain);
+});
