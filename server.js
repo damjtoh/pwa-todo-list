@@ -2,9 +2,13 @@ var express = require("express");
 var cors = require("cors");
 var proxy = require("http-proxy-middleware");
 var app = express();
+const path = require("path");
 
 app.use(cors());
-app.use(express.static(__dirname + "./build/")); //serves the index.html
+app.use(express.static(__dirname + "/build")); //serves the index.html
+app.get("*", (request, response) => {
+  response.sendFile(path.join(__dirname, "build", "index.html"));
+});
 app.use(
   "/todos",
   proxy({
