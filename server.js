@@ -13,4 +13,4 @@ app.use(
   })
 );
 
-app.listen(5000); //listens on port 3000 -> http://localhost:3000/
+app.listen(process.env.PORT || 5000);
