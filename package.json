@@ -63,7 +63,7 @@
     "workbox-webpack-plugin": "4.2.0"
   },
   "scripts": {
-    "start": "npm run build && cd server/ && node index.js",
+    "start": "node ./server/index.js",
     "fstart": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js"
